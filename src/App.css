@@ -131,8 +131,25 @@
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin:5px;
 }
 
 .logout-btn:hover {
   background-color: #c9302c;
+  
+}
+
+.timer{
+  border-radius: 20px;
+  background-color: antiquewhite;
+  padding: 30px;
+  font-size: 50px;
+  width: fit-content;
+}
+
+.winner{
+  color: white;
+  font-size: 60px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: cursive;
 }

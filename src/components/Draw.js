@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import Timer from './Timer';
 
 function Draw({ setLoggedIn }) {
   const [names, setNames] = useState([]);
   const [currentName, setCurrentName] = useState('');
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [showTimer, setShowTimer] = useState(false);
+  const [winner, setWinner] = useState('');
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -20,6 +25,26 @@ function Draw({ setLoggedIn }) {
         setNames([...names, currentName]);
         setCurrentName('');
       }
+    }
+  };
+
+  const handleDraw = async () => {
+    const storedToken = localStorage.getItem('token');
+    setButtonDisabled(true);
+    setShowTimer(true);
+
+    try {
+      const response = await axios.post('http://localhost:8080/temporizer', names, {
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      });
+
+      console.log('Respuesta del servidor:', response.data);
+      setWinner(response.data);
+      showTimer(false);
+    } catch (error) {
+      console.error('Error al hacer el sorteo:', error.message);
     }
   };
 
@@ -47,11 +72,15 @@ function Draw({ setLoggedIn }) {
         <button className="logout-btn" onClick={handleLogout}>
           Logout
         </button>
+
+        <button className="logout-btn" onClick={handleDraw} disabled={buttonDisabled}>
+          Draw
+        </button>
+        {showTimer && <Timer />}
+        {winner !== '' && <p className='winner'>El ganador es {winner}</p>}
       </div>
     </div>
   );
-
-
 }
 
 export default Draw;

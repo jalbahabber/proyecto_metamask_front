@@ -15,7 +15,7 @@ function App() {
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       try {
-        const response = await axios.get('http://localhost:8080/verifyToken', {
+        const response = await axios.get('http://localhost:8080/verifytoken', {
           headers: {
             Authorization: `Bearer ${storedToken}`
           }
@@ -24,7 +24,7 @@ function App() {
           setLoggedIn(true);
         }
       } catch (error) {
-        console.error('Error al verificar el token:', error);
+        console.error('Error al verificar el token:', error.message);
       }
     }
   }
