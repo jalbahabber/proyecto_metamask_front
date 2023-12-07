@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Login from './components/Login';
+import DrawList from './components/DrawList';
 import Draw from './components/Draw';
 import axios from 'axios';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -30,15 +32,14 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        {loggedIn ? (
-          <Draw setLoggedIn={setLoggedIn} />
-        ) : (
-          <Login setLoggedIn={setLoggedIn} />
-        )}
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={loggedIn ? <DrawList/> : <Login setLoggedIn={setLoggedIn} />} />
+          <Route path="/draw/:id" element={<Draw setLoggedIn={setLoggedIn}/>} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

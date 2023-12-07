@@ -1,83 +1,70 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import Timer from './Timer';
+import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
 
 function Draw({ setLoggedIn }) {
-  const [names, setNames] = useState([]);
   const [currentName, setCurrentName] = useState('');
-  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [currentWallet, setCurrentWallet] = useState('');
   const [showTimer, setShowTimer] = useState(false);
   const [winner, setWinner] = useState('');
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     setLoggedIn(false);
+    navigate('/');
   };
 
-  const handleInputChange = (e) => {
+  const handleNameChange = (e) => {
     setCurrentName(e.target.value);
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      if (currentName.trim() !== '') {
-        setNames([...names, currentName]);
-        setCurrentName('');
-      }
-    }
+  const handleWalletChange = (e) => {
+    setCurrentWallet(e.target.value);
   };
 
-  const handleDraw = async () => {
-    const storedToken = localStorage.getItem('token');
-    setButtonDisabled(true);
-    setShowTimer(true);
-
+  async function sendParticipant() {
     try {
-      const response = await axios.post('http://localhost:8080/temporizer', names, {
-        headers: {
-          Authorization: `Bearer ${storedToken}`,
-        },
+      const id = await axios.get('http://localhost:8080/participants/giveId');
+      await axios.post('http://localhost:8080/participants/save', {
+        "id": id,
+        "name": currentName,
+        "wallet": currentWallet
       });
-
-      console.log('Respuesta del servidor:', response.data);
-      setWinner(response.data);
-      showTimer(false);
+    
     } catch (error) {
-      console.error('Error al hacer el sorteo:', error.message);
+      console.error('Error al persistir el participante:', error.message);
     }
   };
 
   return (
     <div className="draw-container">
-      <h1>Introduce los nombres de los participantes</h1>
+      <header>Introduce los datos del participante</header>
       <div className="input-container">
+        <h2>Nombre</h2>
         <input
           type="text"
           value={currentName}
-          onChange={handleInputChange}
-          onKeyPress={handleKeyPress}
-          placeholder="Escribe un nombre y presiona Enter"
+          onChange={handleNameChange}
+          placeholder="Escribe un nombre"
         />
-      </div>
-      <div className="names-container">
-        <h2>Nombres:</h2>
-        <ul className="names-list">
-          {names.map((name, index) => (
-            <li key={index} className="name-card">
-              {name}
-            </li>
-          ))}
-        </ul>
-        <button className="logout-btn" onClick={handleLogout}>
-          Logout
-        </button>
+        <h2>Wallet</h2>
+        <input
+          type="text"
+          value={currentWallet}
+          onChange={handleWalletChange}
+          placeholder="Escribe la dirección de una wallet"
+        />
+        <button className='part-btn' onClick={sendParticipant}>Enviar participante</button>
 
-        <button className="logout-btn" onClick={handleDraw} disabled={buttonDisabled}>
-          Draw
-        </button>
-        {showTimer && <Timer />}
-        {winner !== '' && <p className='winner'>El ganador es {winner}</p>}
+      </div>
+      {showTimer && <Timer />}
+      {winner !== '' && <p className='winner'>El ganador es {winner}</p>}
+      <div className='buttons'>
+        <button className='footer-btn' onClick={handleLogout}>Logout</button>
+        {showTimer && <button className='footer-btn'>Empezar sorteo</button>}
       </div>
     </div>
   );

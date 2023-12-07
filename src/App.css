@@ -1,6 +1,6 @@
-/* Estilos CSS para el formulario de login */
 
-/* Estilos para el contenedor principal del formulario de login */
+
+/* Estilos para el contenedor login */
 .login-container {
   display: flex;
   justify-content: center;
@@ -9,7 +9,7 @@
   background-color: rgba(111, 135, 38, 0.304);
 }
 
-/* Estilos para el formulario de login */
+
 .login-form {
   background-color: #fff;
   border-radius: 8px;
@@ -18,25 +18,24 @@
   width: 300px;
 }
 
-/* Estilos para el título "Login" */
+
 .login-form h1 {
   text-align: center;
   color: #333;
 }
 
-/* Estilos para los contenedores de los campos de entrada */
 .input-container {
   margin-bottom: 20px;
 }
 
-/* Estilos para las etiquetas de los campos de entrada */
+
 .input-container label {
   display: block;
   margin-bottom: 6px;
   color: #555;
 }
 
-/* Estilos para los campos de entrada de texto */
+
 .input-field {
   width: calc(100% - 12px);
   padding: 10px;
@@ -45,11 +44,11 @@
   font-size: 16px;
 }
 
-/* Estilos para el botón de enviar */
+
 .submit-btn {
   margin-left: 30%;
   margin-top: 4%;
-  width:40%;
+  width: 40%;
   padding: 12px;
   border-radius: 20px;
   border: none;
@@ -65,10 +64,8 @@
 }
 
 
+
 /* Estilos para el componente Draw */
-
-
-/* Estilos para la lista de nombres*/
 .names-list {
   display: flex;
   flex-wrap: wrap;
@@ -77,7 +74,8 @@
   list-style: none;
   padding: 0;
 }
-/* Estilos para las tarjetas de los nombres */
+
+
 .name-card {
   font-size: 18px;
   margin: 8px;
@@ -89,28 +87,53 @@
   min-width: 100px;
 }
 
-/* Resto de estilos para el contenedor principal */
+
 .draw-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  background-color: rgba(229, 176, 134, 0.705);
+  background-color: rgba(251, 213, 181, 0.705);
   padding: 20px;
   box-sizing: border-box;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&display=swap');
+
+.draw-container header {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  line-height: 1.6;
+  font-size: 40px;
+  color: #333;
+  margin: auto;
+}
+
+.input-container h2 {
+  padding: 5px;
+  font-size: 20px;
+  margin: 10px;
+  color: rgba(0, 0, 66, 0.675);
+}
+
 .input-container {
   margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: aliceblue;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: auto;
 }
 
 .input-container input {
   padding: 10px;
   font-size: 16px;
-  width: 100%;
-  border-radius: 5px;
+  border-radius: 20px;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  margin: 10px;
 }
 
 .input-container input:focus {
@@ -122,7 +145,7 @@
   text-align: center;
 }
 
-.logout-btn {
+.footer-btn {
   padding: 10px 20px;
   font-size: 16px;
   border: none;
@@ -131,25 +154,140 @@
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin:5px;
+  margin: 5px;
+  width: fit-content;
+
 }
 
-.logout-btn:hover {
+.footer-btn:hover {
   background-color: #c9302c;
-  
+
 }
 
-.timer{
+.part-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #5f4fd9cb;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: auto;
+  width: fit-content;
+}
+
+.part-btn:hover {
+  background-color: rgba(100, 54, 191, 0.951);
+
+}
+
+.buttons {
+  display: flex;
+  margin: auto;
+}
+
+.winner {
+  color: white;
+  font-size: 60px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: cursive;
+}
+
+/*Estilos para el componente Timer */
+.timer {
   border-radius: 20px;
   background-color: antiquewhite;
   padding: 30px;
   font-size: 50px;
   width: fit-content;
+  margin: auto;
+  margin-top: 10px;
 }
 
-.winner{
-  color: white;
-  font-size: 60px;
+/*Estilos para el componente DrawList */
+.drawlist {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: bisque;
+}
+
+.drawlist-container {
+  font-family: Arial, sans-serif;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f982;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 90px;
+  
+}
+
+.drawlist-header {
+  font-size: 50px;
+  font-family: Roboto;
+  margin-top: 30px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+
+.draw-ended {
+  background-color: rgba(230, 111, 87, 0.812);
+  border: 2px solid #ccc;
+  border-radius: 25px;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: auto;
+  height: auto;
+  color: #efe6e6;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-family: cursive;
+  text-align: center;
+}
+
+
+.draw-ongoing {
+  background-color: rgba(201, 230, 88, 0.607);
+  border: 2px solid #ccc;
+  border-radius: 25px;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: auto;
+  height: auto;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-align: center;
+  color: #555;
+}
+
+.draw-ended:hover {
+  background-color: #c50a0a;
+}
+
+.draw-ongoing:hover {
+  background-color: rgba(131, 203, 23, 0.992);
+}
+
+.add-draw {
+  margin: auto;
+  margin-top:10px;
+  width: fit-content;
+  height: fit-content;
+  background-color: rgba(15, 108, 207, 0.782);
+  border-radius: 20px;
+  border: none;
+  padding: 10px;
+  color: whitesmoke;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.draw-link{
+  text-decoration: none;
 }
