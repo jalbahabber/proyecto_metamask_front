@@ -49,8 +49,10 @@ function DrawList() {
             <div className={draw.ended ? 'draw-ended' : 'draw-ongoing'} title={draw.id}>
               Sorteo {index + 1}
               <br/> <br/>
+              {draw.participants !== null ? "Participantes: "+ draw.participants.length : "Participantes: 0"}
+              <br/> <br/>
               {draw.winner !== null ? "Ganador: "+draw.winner : ""}
-              <br/>
+              <br/><br/>
               {draw.ended === true ? 'Estado: Finalizado' : 'Estado: En curso'}
             </div>
           </Link>

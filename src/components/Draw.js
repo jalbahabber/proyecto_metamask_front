@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Timer from './Timer';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -27,11 +27,13 @@ function Draw({ setLoggedIn }) {
 
   async function sendParticipant() {
     try {
-      const id = await axios.get('http://localhost:8080/participants/giveId');
+      const number = await axios.get('http://localhost:8080/participants/giveId');
+
       await axios.post('http://localhost:8080/participants/save', {
-        "id": id,
+        "number": number.data,
         "name": currentName,
-        "wallet": currentWallet
+        "wallet": currentWallet,
+        "sorteo" : id
       });
     
     } catch (error) {
@@ -39,33 +41,49 @@ function Draw({ setLoggedIn }) {
     }
   };
 
-  return (
-    <div className="draw-container">
-      <header>Introduce los datos del participante</header>
-      <div className="input-container">
-        <h2>Nombre</h2>
-        <input
-          type="text"
-          value={currentName}
-          onChange={handleNameChange}
-          placeholder="Escribe un nombre"
-        />
-        <h2>Wallet</h2>
-        <input
-          type="text"
-          value={currentWallet}
-          onChange={handleWalletChange}
-          placeholder="Escribe la dirección de una wallet"
-        />
-        <button className='part-btn' onClick={sendParticipant}>Enviar participante</button>
+  async function obtenerGanadorSorteo(){
+    try {
+      const response = await axios.get(`http://localhost:8080/sorteo/${id}/ganador`); 
+      setWinner(response.data);
+      console.log(response)
+    } catch (error) {
+      console.error('Error al obtener el ganador del sorteo:', error);
+    }
+  };
 
-      </div>
-      {showTimer && <Timer />}
-      {winner !== '' && <p className='winner'>El ganador es {winner}</p>}
-      <div className='buttons'>
-        <button className='footer-btn' onClick={handleLogout}>Logout</button>
-        {showTimer && <button className='footer-btn'>Empezar sorteo</button>}
-      </div>
+  useEffect(() => {
+    obtenerGanadorSorteo();
+  }, []);
+
+  return (
+    <div  className="draw-container">
+      {winner !== '' ? (
+        <p className='winner'>Sorteo terminado, el ganador es {winner}</p>
+      ) : (
+        <div>
+          <header>Introduce los datos del participante</header>
+          <div className="input-container">
+            <h2>Nombre</h2>
+            <input
+              type="text"
+              value={currentName}
+              onChange={handleNameChange}
+              placeholder="Escribe un nombre"
+            />
+            <h2>Wallet</h2>
+            <input
+              type="text"
+              value={currentWallet}
+              onChange={handleWalletChange}
+              placeholder="Escribe la dirección de una wallet"
+            />
+            <button className='part-btn' onClick={sendParticipant}>Enviar participante</button>
+          </div>
+          <div className='buttons'>
+            <button className='footer-btn' onClick={handleLogout}>Logout</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
