@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-function DrawList() {
+function DrawList({ setLoggedIn }) {
   const [draws, setDraws] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!loaded) {
@@ -40,6 +41,12 @@ function DrawList() {
     }
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setLoggedIn(false);
+    navigate('/');
+  };
+  
   return (
     <div className='drawlist'>
       <header className='drawlist-header'>Lista de Sorteos</header>
@@ -61,6 +68,7 @@ function DrawList() {
       <button className='add-draw' onClick={handleNewDraw}>
         Nuevo
       </button>
+      <button className='footer-btn' onClick={handleLogout}>Logout</button>
     </div>
   );
 }

@@ -33,32 +33,59 @@ function Draw({ setLoggedIn }) {
         "number": number.data,
         "name": currentName,
         "wallet": currentWallet,
-        "sorteo" : id
+        "sorteo": id
       });
-    
+
+      setCurrentName('');
+      setCurrentWallet('');
+
     } catch (error) {
       console.error('Error al persistir el participante:', error.message);
     }
   };
 
-  async function obtenerGanadorSorteo(){
+  async function obtenerGanadorSorteo() {
     try {
-      const response = await axios.get(`http://localhost:8080/sorteo/${id}/ganador`); 
+      const response = await axios.get(`http://localhost:8080/sorteo/${id}/ganador`);
       setWinner(response.data);
       console.log(response)
     } catch (error) {
       console.error('Error al obtener el ganador del sorteo:', error);
     }
   };
+  async function handlePayment()
+  {
+    const wallet = await axios.get(`http://localhost:8080/participants/devuelveWallet/${winner}`)
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    window.ethereum.request({
+      method: 'eth_sendTransaction',
+
+      params: [
+        {
+          from: accounts[0],
+          to: wallet,
+          value: "0x1",
+          gasLimit: '0x5028',
+          maxPriorityFeePerGas: '0x3b9aca00',
+          maxFeePerGas: '0x2540be400',
+        },
+      ],
+    
+    }) .then((txHash) => console.log(txHash))
+    .catch((error) => console.error(error));
+  }
 
   useEffect(() => {
     obtenerGanadorSorteo();
   }, []);
 
   return (
-    <div  className="draw-container">
+    <div className="draw-container">
       {winner !== '' ? (
-        <p className='winner'>Sorteo terminado, el ganador es {winner}</p>
+        <div>
+          <p className='winner'>Sorteo terminado, el ganador es el participante número: {winner}</p>
+          <button className='payment' onClick={handlePayment}>Realizar pago metamask</button>
+        </div>
       ) : (
         <div>
           <header>Introduce los datos del participante</header>
@@ -79,9 +106,9 @@ function Draw({ setLoggedIn }) {
             />
             <button className='part-btn' onClick={sendParticipant}>Enviar participante</button>
           </div>
-          <div className='buttons'>
+          
             <button className='footer-btn' onClick={handleLogout}>Logout</button>
-          </div>
+          
         </div>
       )}
     </div>

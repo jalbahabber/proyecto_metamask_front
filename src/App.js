@@ -35,7 +35,7 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={loggedIn ? <DrawList/> : <Login setLoggedIn={setLoggedIn} />} />
+          <Route path="/" element={loggedIn ? <DrawList setLoggedIn={setLoggedIn}/> : <Login setLoggedIn={setLoggedIn} />} />
           <Route path="/draw/:id" element={<Draw setLoggedIn={setLoggedIn}/>} />
         </Routes>
       </div>
